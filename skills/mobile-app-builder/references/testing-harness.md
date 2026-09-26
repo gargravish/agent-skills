@@ -68,3 +68,8 @@ to exercise the bank-backed path locally.
 | `expo run:ios`: "Can't determine id of Simulator app" | Expo uses `xcode-select`, ignoring `DEVELOPER_DIR` — build with xcodebuild + simctl |
 | `expo lint` edits package.json | it auto-installs ESLint; revert if lint isn't part of the project |
 | Prebuild rewrote package.json scripts | `expo run:*` changes `ios`/`android` scripts — revert before committing |
+
+## Gotchas (added from MathMonarch, Sep 2026)
+- `CI=1 npx expo start` disables Metro's file watcher — edits are NOT picked up; restart Metro (`--clear`) after each change, or check the served bundle (`curl …entry.bundle | grep <new-symbol>`).
+- `mobile/.env` values override shell `EXPO_PUBLIC_*` vars for Metro — to point a local build at a test API, edit `.env` (and restore it before committing/building).
+- iOS simulator: when the keyboard is up the form scrolls, so a tap at a button's pre-keyboard position lands on whatever moved there (hit "Continue with Apple" instead of Login). Submit with a trailing "\n" from the focused field instead.

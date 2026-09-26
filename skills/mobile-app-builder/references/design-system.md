@@ -137,3 +137,6 @@ The HIG HTML pages are JS-rendered and scrape empty. Fetch JSON instead:
 `https://developer.apple.com/tutorials/data/design/human-interface-guidelines/<page>.json`
 (`typography`, `layout`, `dark-mode`, `accessibility`, `color`, `tab-bars`, …) and walk
 `primaryContentSections` for `type: "text"` nodes.
+
+## Web sign-in buttons (added Sep 2026)
+Google's official web button (GIS `renderButton`) is at most **400px** wide and fixed-height (~40px for `size:'large'`). Cap the auth card content at 400px and size the GIS button from its slot's measured DOM width (re-render via ResizeObserver) so Google, Apple, fields and the primary action are all identical widths. Don't replace it with a custom Google button — branding rules, and the popup ID-token flow needs the official button.
