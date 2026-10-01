@@ -11,7 +11,9 @@ description: >-
   "new Expo project", "make it work on iPad", "add dark mode / light mode", "make it look native",
   "why was my app rejected for design", "is this ready for the App Store", "write the store listing"
   — even if they never say "skill". For the build/submit/IAP-setup/store-console mechanics, pair it
-  with mobile-app-release.
+  with mobile-app-release. Also covers Flutter offline-first apps (bundled content database,
+  backups, widget/integration tests, native rating prompts) and authoring large content corpora
+  with AI agents plus independent review.
 ---
 
 # Mobile App Builder
@@ -20,6 +22,9 @@ Distilled from shipping MathMonarch (Expo SDK 54 app for iOS, Android and web, 2
 rejections — 4.3(a) spam, 2.1 bug, 2.3 "coming soon", then 4 design ("hard to read type, crowded",
 reviewed on an iPad) + 3.1.2(c) subscriptions — each fixed, plus the patterns that would have
 avoided them. The job of this skill is to make the NEXT app avoid all of that by construction.
+Extended with VocabAura (Flutter, fully offline, one-time purchase, 2026): a 9,000-entry bundled
+content database, an 18,000-sentence AI-drafted corpus reviewed by a second agent, and a native
+rating-prompt policy.
 
 **Sister skill:** `mobile-app-release` owns local/cloud builds, store consoles, agreements,
 RevenueCat wiring, TestFlight/closed testing and the rejection playbook. This skill owns everything
@@ -40,6 +45,8 @@ before that: what to build and how, so review is a formality.
 | Theme, light/dark, typography, contrast, tablet layout, motion, onboarding | `references/design-system.md` |
 | Proving it works: web at device sizes, local fixture API, simulator, no-password sign-in | `references/testing-harness.md` |
 | Pre-submission audit, store listing copy, review notes, replying to a rejection | `references/review-readiness.md` |
+| Flutter or any offline-first app: content DB, backups, practice UI, widget-test pitfalls, rating prompt | `references/flutter-offline-apps.md` |
+| Writing or reviewing a large content corpus (examples, questions, definitions) with AI agents | `references/content-at-scale.md` |
 | Build binaries, store consoles, IAP products, TestFlight, rejections by number | `mobile-app-release` skill |
 
 ## The golden rules (each one cost a rejection or a day)
@@ -67,7 +74,16 @@ before that: what to build and how, so review is a formality.
    must not be claimed for a tier where they repeat.
 9. **Config-gate every paid surface** behind build-time env keys so a build can never show a dead
    buy button, and the server is the single source of truth for entitlements.
-10. **Push early, push often.** A repo under an iCloud-synced folder vanished with unpushed commits.
+10. **Ratings go through the native sheet only**, after a successful finished session, spaced out
+    and capped (Apple 5.6.1 bans custom review prompts; Google bans "do you like it?" pre-questions).
+    See `flutter-offline-apps.md` §6.
+11. **Generated content is a draft until independently reviewed.** Deterministic validators first,
+    then a separate agent review; expect about 5% corrections (`content-at-scale.md`).
+12. **Test the unhappy paths, then the whole journey on both platforms.** Build a negative-path
+    matrix (bad input, platform errors, corrupt or stale storage, clock changes, force-close,
+    restore, a child trying to get round gates) and make missed taps fatal in widget tests
+    (`testing-harness.md` §6–7). Most real bugs found in VocabAura came from these rows.
+13. **Push early, push often.** A repo under an iCloud-synced folder vanished with unpushed commits.
     Keep projects outside `~/Documents`/iCloud; branch → PR → merge the same day.
 
 ## Routing table — use the specialised skills

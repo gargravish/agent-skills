@@ -112,6 +112,33 @@ npx eas-cli submit --platform android --path ./build/app-android.aab --non-inter
 - Transient upload SSL failures ("bad record mac") happen; retry is safe ONLY
   after confirming the first attempt didn't complete (see above).
 
+## Flutter iOS: archive, export, upload (no EAS)
+
+```bash
+flutter build ipa --release --export-options-plist=ios/ExportOptionsUpload.plist
+# ExportOptionsUpload.plist: method app-store-connect, destination upload,
+# signingStyle automatic, teamID <team>. Or, from an existing archive:
+xcodebuild -exportArchive -archivePath build/ios/archive/Runner.xcarchive \
+  -exportOptionsPlist ios/ExportOptionsUpload.plist -exportPath build/ios/ipa-N \
+  -allowProvisioningUpdates
+```
+
+| Error | Meaning and fix |
+|---|---|
+| `exportArchive Failed to Use Accounts … App Store Connect access for "<team>" is required` | Xcode's saved Apple Account session has expired. It recurs every few days, so don't retry in a loop. **Fallback:** export locally (same plist with `destination` = `export`) to get a signed `.ipa`, then the owner uploads it with the **Transporter** app or re-signs in to Xcode → Settings → Accounts. **Durable fix:** an App Store Connect API key (`xcrun altool --upload-app --apiKey … --apiIssuer …`, or `-authenticationKeyPath/-ID/-IssuerID` on xcodebuild). The .p8 stays in `~/.appstoreconnect/private_keys`, never in git. Never accept the owner's Apple ID password in chat. |
+| `Redundant Binary Upload … already uploaded a build with build number 'N'` | That build number **already reached ASC** (often via an earlier Transporter or "failed" attempt), which confirms the earlier upload worked. Don't retry; bump `+N` in `pubspec.yaml` for the next build. |
+| Build invisible in TestFlight after a successful upload | Processing takes 10–60 minutes; the Apple email with an ITMS code arrives if it fails. |
+
+Wrap the upload in a script that picks the API key when it exists and falls back to the Xcode account otherwise: key identifiers in `~/.appstoreconnect/<app>.env`, the `.p8` in `~/.appstoreconnect/private_keys/` (chmod 600), passed as `-authenticationKeyPath/-authenticationKeyID/-authenticationKeyIssuerID` to `xcodebuild -exportArchive`. Test its branches with a fake key under a temporary `HOME`. On macOS's bash 3.2, `"${arr[@]}"` of an empty array fails under `set -u`; use `${arr[@]+"${arr[@]}"}`.
+
+Flutter release-build traps:
+- After running integration tests with `--no-pub`, run `flutter pub get` before a release build. The generated plugin registrant otherwise still lists the dev-only `integration_test` plugin, and the Android release fails with "package dev.flutter.plugins.integration_test does not exist".
+- Keep export-options plists (upload *and* local export) in the repo. Scratch and temp folders get cleaned, and a missing plist makes `flutter build ipa` produce no IPA.
+- Chain build → verify → upload so a failed step stops everything. Check the artifact's timestamp and version (`dumpsys package … versionCode`) before trusting a launch check: an old APK still sitting in the output folder will happily "pass".
+
+Record in the handoff file the IPA path, size and SHA-256 of every exported build, so a human
+can upload the exact tested artifact later.
+
 ## eas.json shape that works
 
 ```jsonc

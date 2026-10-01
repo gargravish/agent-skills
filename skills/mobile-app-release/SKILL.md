@@ -9,7 +9,8 @@ description: >-
   Play Store", "why was my app rejected", "paywall shows coming soon", "set up
   RevenueCat/StoreKit/Play Billing", "closed testing", "TestFlight", store rejections (2.1, 2.3,
   4.3), or starting a brand-new mobile app project that will eventually ship to the stores — even
-  if the user doesn't name a specific store or tool.
+  if the user doesn't name a specific store or tool. Also covers Flutter/xcodebuild archive,
+  export and upload (including expired Xcode accounts) and one-time non-consumable purchases.
 ---
 
 # Mobile App Release Playbook (Expo/EAS + RevenueCat)
@@ -141,3 +142,7 @@ GraphQL), verify yourself — never ask the human to check what you can check.
 | RevenueCat "Could not check" badges | Cosmetic (missing optional ASC API key) or Play permission propagation (≤36h) | revenuecat.md |
 | Purchase succeeds but premium doesn't unlock | Webhook auth/env missing, or app_user_id ≠ your user id | revenuecat.md |
 | Git branch ref vanished mid-build | EAS local build's shallow-clone collided with a commit | local-builds.md |
+| Flutter/xcodebuild export: "Failed to Use Accounts" | Xcode Apple Account session expired → local export + Transporter; API key durable fix | local-builds.md |
+| "Redundant Binary Upload" | That build number already reached ASC → don't retry; bump the build number | local-builds.md |
+| ASC Save stays disabled after filling a field | React form ignores programmatic values → click and type | ios-store.md |
+| One-time unlock, family pricing, launch price | Non-consumable + Family Sharing (irreversible) | ios-store.md |

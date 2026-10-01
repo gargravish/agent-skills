@@ -48,6 +48,21 @@ or command output), not a feeling.
 - [ ] Every marketing claim true for every tier it's claimed for.
 - [ ] No religious/political/violent copy that doesn't fit the age rating (kids apps especially).
 
+**Ratings (5.6.1)**
+- [ ] Only the system rating sheet; no custom stars dialog, no "enjoying the app?" gate; never
+      mid-task; capped and spaced (`flutter-offline-apps.md` §6); not auto-shown to children.
+
+**Global listing (2.3.x / 5.2)**
+- [ ] App **name is unique per localisation**: ASC rejects a name already used by another app in
+      *that* locale, so check each locale you add (en-US often collides when en-GB didn't).
+- [ ] Every storefront shows one of the localisations you provide or falls back to your primary
+      language. Check Apple's storefront-to-language table before assuming which English a
+      country sees, and localise the whole set (name, subtitle, keywords, description,
+      screenshots).
+- [ ] No exam boards or trademarked tests (GL, CEM, IELTS, TOEFL, SAT…) in the name, subtitle or
+      keywords. "In the style of" wording only in the description, and only if true.
+- [ ] "Launch price" or "was £X" claims only while literally true.
+
 **Privacy (5.1)**
 - [ ] Sign in with Apple uses the native `AppleAuthenticationButton` (HIG), placed first.
 - [ ] No unused permission strings (e.g. expo-secure-store adds Face ID unless

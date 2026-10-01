@@ -48,6 +48,31 @@ verification):
   In-App Purchase — required for StoreKit 2. The legacy App-Specific Shared
   Secret is NOT sufficient. Also note Issuer ID + Key ID.
 
+## One-time purchases (non-consumable "Full" / lifetime unlock)
+
+- For an app with no server, a single **non-consumable** product is the simplest trustworthy model:
+  - StoreKit restores it on any device with the same Apple ID;
+  - no webhook or entitlement server is needed;
+  - "Restore Purchases" must still be visible.
+- **Family Sharing** (a checkbox on the IAP in ASC) lets up to five family members use the purchase.
+  **Once turned on it can't be turned off.** Decide before first sale; it's a strong value lever
+  for family and education apps.
+- Introductory "launch price": schedule a price change in ASC rather than editing the base price.
+  Only say "launch price" or "was £X" in copy while it's literally true.
+- Base-price auto-equalisation makes UK or US prices steep in lower-income storefronts. Set
+  manual local price points where that matters (owner decision; pricing changes need the owner's
+  approval).
+
+## Driving the ASC web UI through a browser agent
+
+- ASC is a React app: programmatic `value` setting (form_input / JS) doesn't register, and Save
+  stays disabled. **Click the field and type**, then check the DOM value and that Save enabled.
+- Long `type` actions can time out on the tool side yet still complete; read the field back
+  before retyping (retyping duplicates text).
+- App **name must be unique per localisation**. A name accepted for en-GB can be "already in use"
+  in en-US, so have an alternative ready.
+- Never enter passwords; if ASC asks for re-authentication, hand back to the owner.
+
 ## Submission mechanics
 
 - Version page → select the processed build → attach subscriptions →
