@@ -166,3 +166,21 @@ submission:
   tap Upgrade — purchases are free in Sandbox. Restore Purchases is on the
   same screen.
   ```
+
+## Submitting through the App Store Connect API (learned on VocabAura, Oct 2026)
+
+- An Admin API key (stored outside the repo) can do almost everything with PyJWT (ES256, 15-minute tokens):
+  - version string, copyright, listing text per locale, support, marketing and privacy URLs, review notes;
+  - age-rating answers (PATCH only; read them through `/v1/appInfos/{id}/ageRatingDeclaration`);
+  - screenshots (reserve → PUT the upload operations → PATCH `uploaded` + MD5 → poll `assetDeliveryState`);
+  - attaching the build, and `reviewSubmissions` → `reviewSubmissionItems` → `submitted: true`.
+- **Not possible through the API:** App Privacy answers, the agreements, tax and banking status, and **attaching the first non-consumable purchase**. `inAppPurchaseSubmissions` returns 409 `FIRST_NON_CONSUMABLE_MUST_BE_SUBMITTED_ON_VERSION` whatever the order. Create the draft with the version through the API, then in the web console go to the purchase's page → **Add for Review** → the existing draft → **Submit for Review**, and confirm "2 Items Submitted". If a version already went without the purchase, cancel the review submission (`canceled: true`; the state becomes DEVELOPER_REJECTED, which is harmless) and redo it.
+- 6.9" iPhone screenshots use the display type `APP_IPHONE_67` (1320×2868); 13" iPad uses `APP_IPAD_PRO_3GEN_129` (2064×2752). Take real simulator captures with `simctl io screenshot` while an integration test logs `SHOT <name>` and holds still. Set `simctl status_bar … override --time 9:41` first. In Flutter, pop routes with `NavigatorState.pop()`; `tester.pageBack()` looks for a Cupertino back button.
+- Audit catches from that release:
+  - no `PrivacyInfo.xcprivacy` in the app or the widget extension (UserDefaults in an App Group needs 1C8F.1);
+  - a hard-coded fallback price shown when the store product hasn't loaded (wrong currency for the reviewer);
+  - "Introductory offer" wording on a non-consumable (say "launch price", and only while a price change is actually scheduled);
+  - age rating "parental controls" left at No in an app with a parent PIN;
+  - permission text saying "this iPhone" in an app that also runs on iPad;
+  - review notes pointing to an old "enter 12" adult check.
+
