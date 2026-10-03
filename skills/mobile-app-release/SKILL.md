@@ -120,8 +120,9 @@ The rejections actually hit, and their cures:
 
 ## Working with the human
 
-You cannot drive the user's ASC / Play Console / RevenueCat accounts. For store
-setup, give **one step at a time** with exact field values, wait for
+For App Store Connect, use the API key (`~/.appstoreconnect/` on the owner's Mac)
+and, for web-only steps, the owner's signed-in browser session. For consoles you
+can't reach (Play Console, RevenueCat), give **one step at a time** with exact field values, wait for
 confirmation or a screenshot, and adapt — console UIs shuffle constantly and a
 wall of 12 steps always desyncs from reality. Ask for screenshots on any error;
 they diagnose faster than descriptions. Anything you CAN verify yourself
