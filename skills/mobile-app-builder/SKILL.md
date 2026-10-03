@@ -45,6 +45,7 @@ before that: what to build and how, so review is a formality.
 | Theme, light/dark, typography, contrast, tablet layout, motion, onboarding | `references/design-system.md` |
 | Proving it works: web at device sizes, local fixture API, simulator, no-password sign-in | `references/testing-harness.md` |
 | Pre-submission audit, store listing copy, review notes, replying to a rejection | `references/review-readiness.md` |
+| First-submission kit: Guideline 2.1 answers, recording script, release-readiness tests, licences | `references/review-kit.md` |
 | Flutter or any offline-first app: content DB, backups, practice UI, widget-test pitfalls, rating prompt | `references/flutter-offline-apps.md` |
 | Writing or reviewing a large content corpus (examples, questions, definitions) with AI agents | `references/content-at-scale.md` |
 | Build binaries, store consoles, IAP products, TestFlight, rejections by number | `mobile-app-release` skill |
@@ -85,6 +86,7 @@ before that: what to build and how, so review is a formality.
     (`testing-harness.md` §6–7). Most real bugs found in VocabAura came from these rows.
 13. **Push early, push often.** A repo under an iCloud-synced folder vanished with unpushed commits.
     Keep projects outside `~/Documents`/iCloud; branch → PR → merge the same day.
+14. **Assume a first submission gets Guideline 2.1 "Information Needed".** New developer accounts are asked for a physical-device recording and seven written answers, and the purchase is ejected meanwhile. Ship the answers in the review notes and attach the recording with the first submission; gate releases on the review-kit tests (`references/review-kit.md`).
 
 ## Routing table — use the specialised skills
 

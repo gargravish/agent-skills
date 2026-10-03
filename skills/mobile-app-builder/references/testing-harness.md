@@ -115,3 +115,12 @@ Pure policy classes (lockout, rating prompts, scheduling) take `now` as a parame
 - **Device journeys find layout bugs widget tests miss:** after "Next" on a long page the next question sat above the viewport on a phone, so the test couldn't reach it. The fix belongs in the app (`Scrollable.ensureVisible` on the new question), not in the test.
 - **Pump the whole app at the largest in-app text size** once; a 1.3× reading size exposed a Row that overflowed on the home card.
 
+## 8. Release-readiness tests (every app, before the first submission)
+
+Copy the three test files from [review-kit.md](review-kit.md) §3:
+- `app_version_test`: the shown version matches pubspec, no preview/pilot/beta wording, and bundled licences are registered;
+- `release_readiness_test`: privacy manifests are bundled, export compliance is set, permission strings are specific and device-neutral, and no prices are hard-coded;
+- `store_copy_test`: field limits, the six Guideline 2.1 headings in the notes, privacy and EULA links, no beta wording or trademarks, and replies fit 4,000 characters.
+
+They take milliseconds and would have prevented every finding of VocabAura's first review round.
+

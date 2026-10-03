@@ -184,3 +184,20 @@ submission:
   - permission text saying "this iPhone" in an app that also runs on iPad;
   - review notes pointing to an old "enter 12" adult check.
 
+## Guideline 2.1 "Information Needed" on a first submission (VocabAura, October 2026)
+
+- **What happens:** for an account with "limited App Review history", Apple marks the version **Rejected** and asks for:
+  - a physical-device screen recording (latest OS, starting at launch, showing account flows, user-generated content controls and paid content where they exist);
+  - six written answers: purpose and audience, setup, external services, regions, regulated or third-party material, and in-app purchases;
+  - those answers added to the review notes as well.
+- **Side effect:** the submission's in-app purchase drops back to "Ready to Submit".
+- **Prevent it:** send all of it with the first submission (mobile-app-builder `review-kit.md`).
+- **If it happens anyway:**
+  1. Fix anything that looks unfinished in a new build. This also gives the recording a matching build.
+  2. Save the answers to the notes through the API.
+  3. Have the owner record on their iPhone with a precise script.
+  4. Reply in the App Review thread with the text and the video attached.
+  5. Swap in the new build and re-add the purchase from its page ("Add for Review" → draft).
+  6. Resubmit.
+- The reply box and the notes each hold 4,000 characters, so keep a tested copy in the repo.
+

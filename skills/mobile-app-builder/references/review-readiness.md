@@ -9,6 +9,8 @@
 
 ## 1. Pre-submission audit
 
+**First submission from a new developer account?** Expect Guideline 2.1 "Information Needed" (a physical-device recording plus seven answers). Prepare it in advance with [review-kit.md](review-kit.md), and copy its release-readiness tests into the app.
+
 Walk the app on an **iPad Air 11" (portrait AND landscape)** and an iPhone, in **light AND dark**,
 signed in as the demo account and as a fresh account. For each item, record evidence (screenshot
 or command output), not a feeling.
@@ -26,6 +28,10 @@ or command output), not a feeling.
 - [ ] WebView/KaTeX content ignores Dynamic Type: scale its font by `PixelRatio.getFontScale()`
       (capped) so maths doesn't shrink beside large body text. Answer options ≥ question size.
 - [ ] `maxFontSizeMultiplier` on headings/buttons/inputs; inputs use `minHeight`, never `height`.
+
+**Unfinished-looking text (2.2)**
+- [ ] No user-facing "preview", "pilot", "beta", "coming soon" or "next update", **including** licence and About screens (a hard-coded `applicationVersion: '0.1.0 preview'` slipped through once). Enforce it with the test in review-kit.md §3.
+- [ ] The version shown in the app matches the build's version.
 
 **Completeness (2.1 / 2.3)**
 - [ ] Release build tested on device/simulator — no web-only component on native, no error alerts.
@@ -63,11 +69,17 @@ or command output), not a feeling.
       keywords. "In the style of" wording only in the description, and only if true.
 - [ ] "Launch price" or "was £X" claims only while literally true.
 
+**Licences**
+- [ ] An open-source licences screen exists. Bundled models, fonts, data and media are registered with `LicenseRegistry` (review-kit.md §4).
+
 **Privacy (5.1)**
 - [ ] Sign in with Apple uses the native `AppleAuthenticationButton` (HIG), placed first.
 - [ ] No unused permission strings (e.g. expo-secure-store adds Face ID unless
       `faceIDPermission: false`).
 - [ ] iPad listing screenshots are real iPad captures (a phone frame on iPad slots = 2.3.3).
+- [ ] `PrivacyInfo.xcprivacy` in the app **and every extension** (widgets: App Group UserDefaults → 1C8F.1), in Copy Bundle Resources.
+- [ ] Permission strings are device-neutral ("this device", not "this iPhone") when iPad is supported.
+- [ ] No hard-coded price fallback in the purchase UI.
 - [ ] In-app account deletion; privacy labels match actual collection; no third-party trackers in
       a kids app; permission prompts have purpose strings; `ITSAppUsesNonExemptEncryption` set.
 
@@ -118,6 +130,8 @@ Support URL must lead to a real way to contact you (a landing page with a mailto
 check that `/support` isn't just a SPA fallback to the homepage without contact details.
 
 ## 3. App Review notes template
+
+For a first submission, use the seven-heading template in [review-kit.md](review-kit.md) §1 instead: it answers the Guideline 2.1 information request before it is sent. The template below is for resubmissions after a rejection.
 
 ```
 DEMO ACCOUNT (<what's pre-enabled>): please use the credentials in the Sign-In Information fields.
