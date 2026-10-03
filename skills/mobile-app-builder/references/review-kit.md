@@ -47,6 +47,13 @@ Apple requires: a **physical device on the latest OS**, **starting from the Home
   7. Settings, parent controls and licences.
 - **Deliver:** AirDrop it to the Mac. Attach it to the reply in the App Review thread *and* to App Review Information → Attachment, so future reviews have it.
 - Write the script as a table (step, what to tap, what it proves), with button labels **copied from the code**. A guide that says "Done" when the button reads "Use this level" wastes the owner's take.
+- **Review the recording before sending.** Make contact sheets (`ffmpeg -i in.mp4 -vf "fps=1/4,scale=330:-1,tile=6x2" sheet_%02d.jpg`) and check:
+  - the first second shows the Home Screen launch;
+  - every required item appears, especially the **purchase actually being tapped** (VocabAura's first take showed the price but never bought);
+  - no errors and no private information.
+  If something is missing, ask for a short extra clip that *also starts at launch*, rather than a full redo.
+- **If an Apple ID already owns a non-consumable**, StoreKit may unlock it without showing Apple's sheet. Ask the owner what happened and say so in the reply ("this Apple ID already owned it; a new account sees Apple's sheet").
+- **Size:** browser-automation uploads cap files at about 10 MB. Join clips with the concat demuxer after encoding them with identical settings, then use a two-pass H.264 encode: 540 px wide, 20 fps, about 165 kbps video and 40 kbps mono audio gives about 7.5 MB for 6 minutes, and the text stays readable. Keep the original files.
 
 ## 3. Release-readiness tests (copy into every Flutter app)
 
@@ -126,5 +133,11 @@ Flutter's `showLicensePage` covers Dart packages. **Model weights, fonts, data a
 
 - The **first non-consumable** cannot be attached through the App Store Connect API (409 `FIRST_NON_CONSUMABLE_MUST_BE_SUBMITTED_ON_VERSION`). Create the draft with the version, then attach it from the purchase's page: **Add for Review → existing draft → Submit for Review**, and confirm "2 Items Submitted".
 - Any rejection, including 2.1 Information Needed, **ejects the purchase**. Re-add it before resubmitting.
+- Answering 2.1 in the web console:
+  1. App Review → the submission → **Reply to App Review**. The box holds 4,000 characters; check that the counter matches your text length. Attach the video through the dialog's file input.
+  2. If you changed the build, open the version page and press **Update Review**. That puts the version back in the submission.
+  3. When **both** items show "Ready for Review", **Resubmit to App Review** becomes active.
+  4. Confirm through the API that both are WAITING_FOR_REVIEW.
+- **Delete superseded screenshot sets** (6.5", 6.1" and so on) when you upload the 6.9" set. Otherwise screenshots from an early build stay on the 6.5" slot.
 - Age rating: answer "parental controls" **Yes** if the app has a parent PIN or gate.
 - Purchase UI: say "launch price" only while a price change is actually scheduled, and never "introductory offer" on a non-consumable.
