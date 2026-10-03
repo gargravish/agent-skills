@@ -205,3 +205,18 @@ Learned building VocabAura's Phrase Finder (Oct 2026): "describe a meaning, get 
 - Record practice outside scheduling in its own idempotent `activity_events` table (`id`, `kind`, `entry_id`, `created_at`, `payload_json`), skip unknown kinds on read (written by a newer version), and include it in versioned backups with strict validation.
 - **Self-rated difficulty, made useful (four levels):** map Too easy / Easy / Hard / Too hard to where the learner sits relative to the word's difficulty (for example +0.18, +0.08, −0.03, −0.13). Weight the rating by the answer: "too easy" after a wrong answer barely counts, and "too hard" after a right answer only means the word is at their edge. Scale every step by a trust score (how often past feelings matched results, with a prior of two agreeing ratings) and by 1/(1 + n/15), so early ratings count most. Let a rating move the level only in its own direction and cap each step. Re-pick only upcoming *new* words in an adaptive session, never fixed daily words, started words or a list the learner chose, and tell the learner it happened. Store the ratings as activity events, never as scheduling input.
 
+## 15. An open dictionary behind a curated library (Open English WordNet)
+
+- **Diagnose before adding data.** "not feeling well → teamwork" was the free tier (no meaning search) plus plain text matching that **dropped "not"** and matched "working well together". The full library already had *under the weather*. Plain meaning matching must stand aside for negated queries (not, no, never, without, n't…) and ignore weak words (well, feel…). Say honestly when nothing in the free sample fits.
+- **Open English WordNet** (CC BY 4.0, derived from Princeton WordNet; credit both and ship both licence texts) packs to about 16 MB of SQLite: words(word, synset, rank), synsets(pos, gloss, child_ok), bridge(word, entry_id). Avoid GCIDE (GPL) and Wiktionary (CC BY-SA, huge) in a store app.
+- **Synonym bridge done right:**
+  - Match each library entry to WordNet senses by encoder similarity of **definition vs gloss without the headword**. With the headword, every sense of "bank" looks alike.
+  - Let a typed word bridge only through its **two commonest senses**, in file order: people typing "sick" mean ill, not macabre.
+  - For adjectives, follow `similar` links, so "ill" reaches *poorly*.
+- **Safety:** WordNet's usage labels are sparse. Filter on gloss markers (offensive, vulgar, obscene, slur, derogatory, slang…) as whole words, plus your blocked list. Hide sensitive senses from child profiles, and test with real data (a substring test flags "offensively bold" and *Phaseolus vulgaris*).
+- **UI:**
+  - Label WordNet definitions as "Basic definition, not part of the reviewed library" with attribution, and show them only when the typed text isn't a library word.
+  - When it's a real English word outside the library, put the library synonyms directly under the card, above prefix completions.
+- Tie the dictionary to the content hash in a release check, because the bridge stores entry ids.
+- Run `dart format` only on files you changed. Formatting the whole tree rewrapped nine unrelated files and turned single-line `if` statements into lint errors.
+
