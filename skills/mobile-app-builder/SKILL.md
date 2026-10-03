@@ -74,7 +74,8 @@ before that: what to build and how, so review is a formality.
    (4.3(a) + copyright). Keep marketing claims literally true (2.3.1): "fresh questions every time"
    must not be claimed for a tier where they repeat.
 9. **Config-gate every paid surface** behind build-time env keys so a build can never show a dead
-   buy button, and the server is the single source of truth for entitlements.
+   buy button. With a backend, the server is the single source of truth for entitlements; an
+   offline app relies on the store's on-device purchase (`flutter-offline-apps.md`).
 10. **Ratings go through the native sheet only**, after a successful finished session, spaced out
     and capped (Apple 5.6.1 bans custom review prompts; Google bans "do you like it?" pre-questions).
     See `flutter-offline-apps.md` §6.
