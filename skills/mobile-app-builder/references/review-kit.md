@@ -119,6 +119,15 @@ test('no hard-coded price in UI strings', () {
 // name/subtitle/keywords; saved review replies fit 4000 chars.
 ```
 
+```dart
+// Keep the notes true as the app grows: every bundled third-party asset
+// (model, dictionary, fonts, data) must be named in reviewNotes and the
+// privacy policy. VocabAura's notes said "no third-party dictionary" one
+// day before a WordNet dictionary was added. Map pubspec asset -> name and
+// fail when the asset is bundled and the name is missing; also guard
+// headings losing their newline ("AUDIENCEAn offline...").
+```
+
 ## 4. Licences: what you must ship
 
 Apple doesn't require a licences screen. The licences do, so keep one:
