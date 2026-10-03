@@ -81,3 +81,12 @@ rows. Spot-check a random sample by hand and record the sample size and result i
 - Brief the drafter to avoid copying three or more consecutive words from the answer's own definition, or the evaluation measures string overlap instead of meaning.
 - For comprehension passages, have the compiler check that each target word appears exactly once as a whole word, every clue phrase is an exact substring without the target, options are distinct, and answer positions are spread evenly (a seeded shuffle does this).
 
+## Running big agent jobs efficiently (VocabAura, October 2026)
+
+- **Chunk and parallelise.** About 2,000–2,300 items per drafting agent (four agents covered 9,015 entries × 3 phrases). Give each agent its own input file, output file and **working subfolder**: shared scratch scripts got overwritten when two agents used the same names.
+- **Make every agent resumable.** Usage limits stopped all four drafters part-way. Because the prompt said "append each batch of about 150 to the output file", nothing was lost. Resume the *same* agent with SendMessage, naming its file and line count ("1,500 lines done; continue from the next id"), rather than starting a fresh agent that redoes the work.
+- **Put the validator in the prompt**: line count and order, field counts, length limits, banned words, no copying from the source definition, and so on. Have the agent run it until it's clean, and require its output in the final reply. A second agent reviewing *every* line is affordable (about 4,500 lines each, 5–10 minutes) and fixed about 4% of 27,000 phrases.
+- **Keep evaluation data unseen.** Name the forbidden paths in every drafting prompt ("never open phrase_eval.jsonl or content/review/"). Afterwards, run a **leakage check**: token Jaccard ≥ 0.6 between generated items and test queries. Report scores both with and without the near-copies; natural phrasing converges even without peeking.
+- **Never print held-out numbers while exploring.** Choose designs on the dev split only. If a script shows test scores by accident, say so in the evidence and still decide on dev.
+- Helper data that users never see (for example search phrases, of which only vectors ship) still gets the automated safety screen, but a hit can simply be dropped rather than rewritten.
+

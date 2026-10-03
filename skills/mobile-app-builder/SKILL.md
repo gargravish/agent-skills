@@ -87,6 +87,7 @@ before that: what to build and how, so review is a formality.
 13. **Push early, push often.** A repo under an iCloud-synced folder vanished with unpushed commits.
     Keep projects outside `~/Documents`/iCloud; branch → PR → merge the same day.
 14. **Assume a first submission gets Guideline 2.1 "Information Needed".** New developer accounts are asked for a physical-device recording and seven written answers, and the purchase is ejected meanwhile. Ship the answers in the review notes and attach the recording with the first submission; gate releases on the review-kit tests (`references/review-kit.md`).
+15. **Start the slow things first and in parallel.** Launch agent content jobs and builds before audits; ask the owner for owner-only steps (sign-ins, device recordings, public-contact choices) early and in one batch; run device tests in one checkout while you work in a worktree (`testing-harness.md` §9, `content-at-scale.md`).
 
 ## Routing table — use the specialised skills
 

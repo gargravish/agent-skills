@@ -201,3 +201,29 @@ submission:
   6. Resubmit.
 - The reply box and the notes each hold 4,000 characters, so keep a tested copy in the repo.
 
+## End-to-end iOS release runbook (Flutter, API key, no Xcode UI)
+
+1. **Gate:** `flutter analyze`, `flutter test` (including the review-kit readiness and store-copy tests), and the device journeys on the simulator and the emulator.
+2. **Bump** `version: X.Y.Z+N`, run `flutter pub get` (needed after `--no-pub` test runs), then `flutter build ipa --release --export-options-plist=ios/ExportOptionsLocal.plist`.
+3. **Inspect the IPA before upload:** `unzip -q` it into a scratch folder, then check:
+   - `PlistBuddy -c "Print :CFBundleShortVersionString" -c "Print :CFBundleVersion"`;
+   - every `NS*UsageDescription`;
+   - `PrivacyInfo.xcprivacy` in `Runner.app` **and** each `PlugIns/*.appex`;
+   - that the expected assets are present;
+   - that debug or spike flags are absent (`strings App.framework/App | grep FLAG`).
+4. **Upload** with the API key (`xcodebuild -exportArchive` with an upload destination, or `altool`).
+5. **Wait** with one background loop that polls `/v1/builds?filter[app]=…&filter[version]=N` every 60 seconds and exits on VALID, FAILED or INVALID. Builds can take a few minutes just to *appear*.
+6. **Set TestFlight "What to Test"** (`betaBuildLocalizations`) so the owner knows what to check.
+7. **Metadata by API** from the repo's copy JSON: listing text, URLs, review notes, age rating, screenshots (removing superseded sets).
+8. **Web-only checks:** App Privacy published, and Paid Apps Agreement, bank and tax Active. Ask the owner to sign in to App Store Connect in the agent's Chrome and check read-only. Sessions expire after about a day, so ask again rather than retrying.
+9. **Submit:** create the review submission with the version through the API, add a first-time purchase from the purchase's page, confirm "2 Items Submitted", then verify through the API that both are WAITING_FOR_REVIEW.
+
+## Public privacy and support pages in five minutes (GitHub Pages)
+
+- Keep the source in the app repo (`docs/PRIVACY_POLICY.md`, `docs/SUPPORT.md`) and generate static HTML with a small script: light and dark CSS, `mailto:` links, a `.nojekyll` file.
+- Publish to a **separate public repo** (the app repo stays private):
+  `gh repo create <owner>/<app>-site --public --source . --push`, then
+  `gh api -X POST repos/<owner>/<app>-site/pages -f "source[branch]=main" -f "source[path]=/"`.
+  Poll with `curl -sf` until the pages are live (a minute or two).
+- The support page needs a real contact. **Which email to publish is the owner's decision**, so ask them; never publish a personal address on your own initiative.
+

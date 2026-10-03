@@ -124,3 +124,11 @@ Copy the three test files from [review-kit.md](review-kit.md) §3:
 
 They take milliseconds and would have prevented every finding of VocabAura's first review round.
 
+## 9. Session hygiene that saves hours
+
+- **A journey that prints no result usually means the emulator died, not the app.** Run `adb devices`; if it's empty, restart with `emulator -avd <name> -no-boot-anim &`, then `adb wait-for-device`, then poll `getprop sys.boot_completed` until it reads 1. Discard the partial log and **re-run every affected journey**. Never count a crashed run as a result.
+- **Background waiters go stale.** A loop watching a log never finishes once you replace that run. Kill it as soon as you start the replacement, and prefer one-shot loops that exit on success *and* on failure markers.
+- **Keep working while device tests run:** `git worktree add -b feature ../wt HEAD`, then `flutter pub get --offline` there, build and test, and fast-forward back. Editing the checkout that tests are running against changes what the next journey compiles.
+- **zsh:** a glob that matches nothing fails the whole command ("no matches found"). List the directory first, or use `find`. macOS has no `timeout`.
+- **Deleting files:** agent safety checks block `rm -rf` with globs after `cd`, rightly so. Remove tracked files with `git rm $(git ls-files <dir>)`, which is recoverable, or with explicit absolute paths; `git rm` also removes now-empty folders, so `mkdir -p` before copying replacements in.
+

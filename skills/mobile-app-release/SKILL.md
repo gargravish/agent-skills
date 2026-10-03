@@ -32,6 +32,7 @@ Specialised installed skills for store mechanics: `eas-app-stores`, `eas-workflo
 |---|---|
 | Building an .ipa/.aab locally, build failures, submitting binaries | `references/local-builds.md` |
 | App Store Connect: agreements, subscriptions, TestFlight, App Review | `references/ios-store.md` |
+| Flutter/native release by API key: runbook, IPA inspection, API metadata and screenshots, Guideline 2.1 replies, public privacy site | `references/ios-store.md` (runbook sections at the end) |
 | Play Console: merchant profile, subscriptions, closed testing, service accounts | `references/android-store.md` |
 | RevenueCat wiring, webhooks, entitlements, "prices don't show" | `references/revenuecat.md` |
 
@@ -126,6 +127,13 @@ wall of 12 steps always desyncs from reality. Ask for screenshots on any error;
 they diagnose faster than descriptions. Anything you CAN verify yourself
 (webhook auth via curl, demo-account state via API, build status via CLI/
 GraphQL), verify yourself — never ask the human to check what you can check.
+
+- **Owner-only steps — ask early, in one message:**
+  - signing in to App Store Connect in the agent's browser (for App Privacy, agreements and first-purchase attachment; the session expires after about a day);
+  - a physical-device screen recording when App Review asks for one (give a step table with button labels copied from the code);
+  - which contact email goes public;
+  - anything irreversible (Family Sharing, prices, final submission).
+- After a review message, read it fully, list what only the owner can supply, start everything else meanwhile, and check the owner's material (video frames, device and OS) before sending it on.
 
 ## Quick triage index
 
