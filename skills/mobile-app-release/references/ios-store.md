@@ -200,6 +200,7 @@ submission:
   5. Swap in the new build and re-add the purchase from its page ("Add for Review" → draft).
   6. Resubmit.
 - The reply box and the notes each hold 4,000 characters, so keep a tested copy in the repo.
+- **Timing to plan for:** VocabAura was submitted on 2 October; the 2.1 request came the next day; the answer and resubmission went in the same day; it was live on 14 October. Plan about **two weeks from first submission to launch** for a new account, with one information round, and tell the owner up front.
 
 ## End-to-end iOS release runbook (Flutter, API key, no Xcode UI)
 
@@ -217,6 +218,19 @@ submission:
 7. **Metadata by API** from the repo's copy JSON: listing text, URLs, review notes, age rating, screenshots (removing superseded sets).
 8. **Web-only checks:** App Privacy published, and Paid Apps Agreement, bank and tax Active. Ask the owner to sign in to App Store Connect in the agent's Chrome and check read-only. Sessions expire after about a day, so ask again rather than retrying.
 9. **Submit:** create the review submission with the version through the API, add a first-time purchase from the purchase's page, confirm "2 Items Submitted", then verify through the API that both are WAITING_FOR_REVIEW.
+10. **Release (manual release):** after approval the version shows "Pending Developer Release". The owner presses Release. Then check by API that the version is `READY_FOR_SALE` and the purchase is `APPROVED`. Check the public listing without signing in: `curl "https://itunes.apple.com/lookup?id=<appId>&country=gb"` returns the name, version, `releaseDate`, price and download size once the store has picked the release up, which can take a few hours.
+
+## After launch: first-week checklist
+
+- **Verify, don't assume:** the version is `READY_FOR_SALE`, each purchase is `APPROVED` (Family Sharing as intended), and the lookup API returns the listing in the main storefronts.
+- **Point people at it:** add the App Store link (`https://apps.apple.com/app/id<appId>`) to the support and privacy site and the README, and to any in-app "share the app" or rating fallback. Publishing the site is an owner-approved step.
+- **Release the queued work as the first update, without changing what's live:**
+  - Next version (for example 1.0.1) and the next build number.
+  - **What's New** is required for updates. Keep it in the repo's store-copy JSON.
+  - Re-check the review notes for anything new the update bundles (models, datasets, fonts). A test should fail if the notes don't mention them.
+  - Updates normally go through review faster than the first submission. The purchase is already approved and doesn't need attaching again.
+- **Watch** Ratings and Reviews, crash reports (App Store Connect → TestFlight/Analytics), and download size: the lookup API's `fileSizeBytes` shows what users actually download.
+- **Product page options:** in 2026, App Store Connect shows "New Ways to Market Apps": a custom product-page header, search-result customisation, Custom Product Pages and screenshots for new device classes. Treat these as ASO work for after launch (`aso` skill), not something that blocks launch.
 
 ## Public privacy and support pages in five minutes (GitHub Pages)
 

@@ -1,6 +1,6 @@
 # Review kit — have these ready BEFORE the first submission
 
-New or low-history developer accounts now routinely get **Guideline 2.1 – Information Needed** on their first submission (seen September–October 2026). The version is marked Rejected, **the first in-app purchase is ejected from the submission**, and nothing moves until you reply with a physical-device screen recording plus answers to seven questions. That costs days. Do it all up front instead:
+New or low-history developer accounts now routinely get **Guideline 2.1 – Information Needed** on their first submission (seen September–October 2026). The version is marked Rejected, **the first in-app purchase is ejected from the submission**, and nothing moves until you reply with a physical-device screen recording plus answers to seven questions. That costs days. VocabAura answered a 2.1 request the same day and was live 12 days after its first submission. Doing it all up front saves the round trip:
 
 1. put the seven answers in **App Review Information → Notes** (4,000 characters at most);
 2. attach a **physical-device screen recording** in App Review Information → Attachment;

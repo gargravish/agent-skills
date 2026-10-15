@@ -33,6 +33,7 @@ Specialised installed skills for store mechanics: `eas-app-stores`, `eas-workflo
 | Building an .ipa/.aab locally, build failures, submitting binaries | `references/local-builds.md` |
 | App Store Connect: agreements, subscriptions, TestFlight, App Review | `references/ios-store.md` |
 | Flutter/native release by API key: runbook, IPA inspection, API metadata and screenshots, Guideline 2.1 replies, public privacy site | `references/ios-store.md` (runbook sections at the end) |
+| Approved: manual release, launch verification, first update, product-page options | `references/ios-store.md` ("After launch") |
 | Play Console: merchant profile, subscriptions, closed testing, service accounts | `references/android-store.md` |
 | RevenueCat wiring, webhooks, entitlements, "prices don't show" | `references/revenuecat.md` |
 
